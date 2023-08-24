@@ -37,6 +37,8 @@ public class Funcionario  implements Serializable{
         this.departamento_pai = departamento_pai;
     }
 
+
+
     public Funcionario() {
     }
 
