@@ -1,5 +1,6 @@
 package com.mcardoso.backend.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,14 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mcardoso.backend.domain.Departamento;
 import com.mcardoso.backend.domain.Funcionario;
 import com.mcardoso.backend.repository.DepartamentoRepository;
 import com.mcardoso.backend.repository.FuncionarioRepository;
+import com.mcardoso.backend.services.FuncServices;
 
 @RestController
 @RequestMapping("/funcionario")
@@ -23,9 +27,9 @@ public class FuncionarioController {
 
     @Autowired
     FuncionarioRepository funcRepository;
-
-        @Autowired
-    DepartamentoRepository deptoRepository;
+@Autowired
+    FuncServices funcSevices;
+      
 
     @GetMapping
     public ResponseEntity<List<Funcionario>> findAll() {
@@ -45,14 +49,13 @@ public class FuncionarioController {
     }
 
 @PostMapping("/{id_depto}")
-public  ResponseEntity<Funcionario> insFunc(@PathVariable Integer id_depto, @Valid @RequestBody Funcionario pFuncionario){
-/* 
-    Departamento  depto = deptoRepository.findById(id_depto);
-  Funcionario novoFunc = new Funcionario();
- novoFunc.setId_funcionario(null);
- novoFunc.setNm_funcionario(pFuncionario.getNm_funcionario());
- novoFunc.setDepartamento_pai(depto);
- */
+public  ResponseEntity<Funcionario> insFunc(@PathVariable Integer id_depto,  @RequestBody Funcionario pFuncionario){
+
+    Funcionario novoFuncionario = funcSevices.insFunc( pFuncionario,id_depto);
+    URI  vUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoFuncionario.getId_funcionario()).toUri();
+ return ResponseEntity.created(vUri).body(novoFuncionario);
+
+
 }
 
     @DeleteMapping("/{id}")
