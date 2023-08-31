@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +36,11 @@ public class FuncionarioController {
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Funcionario>> findByName(@PathVariable String nome) {
         return ResponseEntity.ok().body(funcRepository.findByName(nome));
+    }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> delFunc(@PathVariable Integer id){
+            funcRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
     }
 }
