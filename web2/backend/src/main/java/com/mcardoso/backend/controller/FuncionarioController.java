@@ -48,7 +48,7 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(funcRepository.findByName(nome));
     }
 
-@PostMapping("/{id_depto}")
+@PostMapping( "/{id_depto}")
 public  ResponseEntity<Funcionario> insFunc(@PathVariable Integer id_depto,  @RequestBody Funcionario pFuncionario){
 
     Funcionario novoFuncionario = funcSevices.insFunc( pFuncionario,id_depto);
