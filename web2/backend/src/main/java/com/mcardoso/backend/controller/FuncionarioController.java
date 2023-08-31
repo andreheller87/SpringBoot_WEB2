@@ -8,10 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mcardoso.backend.domain.Departamento;
 import com.mcardoso.backend.domain.Funcionario;
+import com.mcardoso.backend.repository.DepartamentoRepository;
 import com.mcardoso.backend.repository.FuncionarioRepository;
 
 @RestController
@@ -20,6 +23,9 @@ public class FuncionarioController {
 
     @Autowired
     FuncionarioRepository funcRepository;
+
+        @Autowired
+    DepartamentoRepository deptoRepository;
 
     @GetMapping
     public ResponseEntity<List<Funcionario>> findAll() {
@@ -37,6 +43,17 @@ public class FuncionarioController {
     public ResponseEntity<List<Funcionario>> findByName(@PathVariable String nome) {
         return ResponseEntity.ok().body(funcRepository.findByName(nome));
     }
+
+@PostMapping("/{id_depto}")
+public  ResponseEntity<Funcionario> insFunc(@PathVariable Integer id_depto, @Valid @RequestBody Funcionario pFuncionario){
+/* 
+    Departamento  depto = deptoRepository.findById(id_depto);
+  Funcionario novoFunc = new Funcionario();
+ novoFunc.setId_funcionario(null);
+ novoFunc.setNm_funcionario(pFuncionario.getNm_funcionario());
+ novoFunc.setDepartamento_pai(depto);
+ */
+}
 
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> delFunc(@PathVariable Integer id){
