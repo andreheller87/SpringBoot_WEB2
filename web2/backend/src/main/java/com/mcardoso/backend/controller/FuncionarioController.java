@@ -15,21 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mcardoso.backend.domain.Departamento;
 import com.mcardoso.backend.domain.Funcionario;
-import com.mcardoso.backend.repository.DepartamentoRepository;
 import com.mcardoso.backend.repository.FuncionarioRepository;
 import com.mcardoso.backend.services.FuncServices;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/funcionario")
 public class FuncionarioController {
 
     @Autowired
-    FuncionarioRepository funcRepository;
-@Autowired
-    FuncServices funcSevices;
-      
+    private FuncionarioRepository funcRepository;
+
+    @Autowired
+    private FuncServices funcServices;
 
     @GetMapping
     public ResponseEntity<List<Funcionario>> findAll() {
@@ -48,19 +48,18 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(funcRepository.findByName(nome));
     }
 
-@PostMapping( "/{id_depto}")
-public  ResponseEntity<Funcionario> insFunc(@PathVariable Integer id_depto,  @RequestBody Funcionario pFuncionario){
-
-    Funcionario novoFuncionario = funcSevices.insFunc( pFuncionario,id_depto);
-    URI  vUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoFuncionario.getId_funcionario()).toUri();
- return ResponseEntity.created(vUri).body(novoFuncionario);
-
-
-}
+    @PostMapping(value = "/{id_depto}")
+    public ResponseEntity<Funcionario> insFunc(@PathVariable Integer id_depto,@Valid @RequestBody Funcionario pFuncionario) {
+        Funcionario novoFuncionario = funcServices.insFunc(pFuncionario, id_depto);
+        URI vURI = ServletUriComponentsBuilder.fromCurrentContextPath().path("/funcionario/{id}").buildAndExpand(novoFuncionario.getId_funcionario()).toUri();
+        //fromCurrentRequest().path("/{id}").buildAndExpand(novoFuncionario.getId_funcionario()).toUri();
+        return ResponseEntity.created(vURI).body(novoFuncionario);
+    }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> delFunc(@PathVariable Integer id){
-            funcRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> delFunc(@PathVariable Integer id) {
+        //funcRepository.deleteById(id);
+        funcServices.delFunc(id);
+        return ResponseEntity.noContent().build();
     }
 }
