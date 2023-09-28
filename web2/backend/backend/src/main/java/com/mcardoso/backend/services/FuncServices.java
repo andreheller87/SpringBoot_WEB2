@@ -37,11 +37,13 @@ public class FuncServices {
         funcRepository.deleteById(pIdFuncionario);
     }
 
-    public Funcionario updFunc(Integer pId, Funcionario pFuncionario){
-        Funcionario funcAtual = funcRepository.findById(pId).orElseThrow(
-            () -> new ObjectNotFoundException("Funcionario" + pId +" Não encontrado")
-        );
-        funcAtual.setId_funcionario(pFuncionario.getNm_funcionario());
-        
+    public Funcionario updFunc(Integer pId, Funcionario pFuncionario) {
+        Funcionario funcAtual =
+            funcRepository.findById(pId)
+                .orElseThrow(
+                    () -> new ObjectNotFoundException("Funcionário "+pId+" não encontrado!")
+                );
+        funcAtual.setNm_funcionario(pFuncionario.getNm_funcionario());
+        return funcRepository.save(funcAtual);
     }
 }
