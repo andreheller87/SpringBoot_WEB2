@@ -64,4 +64,5 @@ public class DepartamentoController {
         URI vURI = ServletUriComponentsBuilder.fromCurrentContextPath().path("/departamento/{id}").buildAndExpand(pDepto.getId_depto()).toUri();
         return ResponseEntity.created(vURI).body(pDepto);
     }
+    
 }
